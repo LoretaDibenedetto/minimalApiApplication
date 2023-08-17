@@ -10,9 +10,18 @@ namespace DataAccess.Repositories
 {
     public class PostRepositories : IPostRepository
     {
-        public Task<Post> CreatePost(Post toCreate)
+        private readonly SocialDbContext _ctx;
+        public PostRepositories(SocialDbContext ctx)
         {
-            throw new NotImplementedException();
+            _ctx = ctx;
+        }
+        public async Task<Post> CreatePost(Post toCreate)
+        {
+            toCreate.DateCreated = DateTime.Now;
+            toCreate.LastModifier = DateTime.Now;
+            _ctx.Posts.Add(toCreate);
+            await _ctx.SaveChangesAsync();
+            return toCreate;
         }
 
         public Task DeletePost(int postId)
