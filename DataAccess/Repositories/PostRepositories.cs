@@ -39,14 +39,19 @@ namespace DataAccess.Repositories
             return await _ctx.Posts.ToListAsync();
         }
 
-        public Task<Post> GetPostById(int postId)
+        public async Task<Post> GetPostById(int postId)
         {
-            throw new NotImplementedException();
+            return await _ctx.Posts.FirstOrDefaultAsync(p => p.Id == postId);
         }
 
-        public Task<Post> UpdatePost(string updatedContent, int postId)
+        public async Task<Post> UpdatePost(string updatedContent, int postId)
         {
-            throw new NotImplementedException();
+            var post = await _ctx.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+            post.LastModifier = DateTime.Now;
+            post.Content = updatedContent;
+            await _ctx.SaveChangesAsync();
+            return post;
+
         }
     }
 }
