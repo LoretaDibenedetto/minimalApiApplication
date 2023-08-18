@@ -1,5 +1,5 @@
 ﻿using Domain.Models;
-
+using System;
 
 namespace Application.Abstractions
 {
