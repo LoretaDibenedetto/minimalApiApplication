@@ -34,9 +34,9 @@ namespace DataAccess.Repositories
             await _ctx.SaveChangesAsync();
         }
 
-        public Task<ICollection<Post>> GetAllPosts()
+        public async Task<ICollection<Post>> GetAllPosts()
         {
-            throw new NotImplementedException();
+            return await _ctx.Posts.ToListAsync();
         }
 
         public Task<Post> GetPostById(int postId)
