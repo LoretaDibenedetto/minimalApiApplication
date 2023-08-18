@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,13 @@ namespace DataAccess.Repositories
             return toCreate;
         }
 
-        public Task DeletePost(int postId)
+        public async Task DeletePost(int postId)
         {
-            throw new NotImplementedException();
+            var post = await _ctx.Posts
+            .FirstOrDefaultAsync(p => p.Id == postId);
+            if (post == null) return; 
+            _ctx.Posts.Remove(post);
+            await _ctx.SaveChangesAsync();
         }
 
         public Task<ICollection<Post>> GetAllPosts()
