@@ -19,7 +19,13 @@ namespace Application.Posts.CommandHandlers
         }
         public async  Task<Post> Handle(CreatePost request, CancellationToken cancellationToken)
         {
+            var newPost = new Post
+            {
+                Content = request.PostContent,
+               
+            };
 
+            return await _postsRepo.CreatePost(newPost);
         }
     }
 }
