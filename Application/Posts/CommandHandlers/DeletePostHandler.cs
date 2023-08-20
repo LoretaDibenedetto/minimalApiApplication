@@ -14,12 +14,18 @@ namespace Application.Posts.CommandHandlers
             _postsRepo = postsRepo;
         }
 
-        public async Task Handle(DeletePost request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeletePost request, CancellationToken cancellationToken)
         {
             await _postsRepo.DeletePost(request.PostId);
-           
+             return Unit.Value;
         }
 
-       
+        //public async Task Handle(DeletePost request, CancellationToken cancellationToken)
+        //{
+        //    await _postsRepo.DeletePost(request.PostId);
+
+        //}
+
+
     }
 }
