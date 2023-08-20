@@ -3,7 +3,9 @@ using Application.Posts.Commands;
 using Application.Posts.Queries;
 using DataAccess;
 using DataAccess.Repositories;
+using Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,13 @@ app.MapGet("/api/posts/{id}",async(IMediator mediator, int id) =>
 
 })
     .WithName("GetPostById");
+
+app.MapPost("api/posts",async (IMediator mediator, [FromBody]Post post ) =>
+{
+    var createPost = new CreatePost { PostContent = post.Content };
+    var createdPost = await mediator.Send(createPost);
+    return Results.CreatedAtRoute("GetPostById",new {createdPost.Id}, createdPost);
+});
 
 app.Run();
 
