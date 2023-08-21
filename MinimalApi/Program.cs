@@ -46,5 +46,12 @@ app.MapGet("/api/posts", async (IMediator mediator) =>
     return Results.Ok(posts);
 });
 
+app.MapPut("/api/posts/{id}", async (IMediator mediator, Post post, int id) =>
+{
+    var updatePost = new UpdatePost{ PostId = id, PostContent = post.Content };
+    var updatedPost = await mediator.Send(updatePost);
+    return Results.Ok(updatedPost);
+});
+
 app.Run();
 
