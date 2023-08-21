@@ -1,20 +1,16 @@
-using Application.Abstractions;
+
 using Application.Posts.Commands;
 using Application.Posts.Queries;
-using DataAccess;
-using DataAccess.Repositories;
+
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
+using MinimalApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var cs = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<SocialDbContext>(opt => opt.UseSqlServer(cs));
-builder.Services.AddScoped<IPostRepository, PostRepositories>();
-builder.Services.AddMediatR(typeof(CreatePost));
-
+builder.RegisterServices();
 
 
 var app = builder.Build();
