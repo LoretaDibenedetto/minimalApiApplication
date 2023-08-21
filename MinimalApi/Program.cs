@@ -53,5 +53,13 @@ app.MapPut("/api/posts/{id}", async (IMediator mediator, Post post, int id) =>
     return Results.Ok(updatedPost);
 });
 
+app.MapDelete("/api/posts/{id}", async (IMediator mediator, int id) =>
+{
+    var deletePost = new DeletePost { PostId = id };
+    await mediator.Send(deletePost);
+    return Results.NoContent();
+});
+
+
 app.Run();
 
