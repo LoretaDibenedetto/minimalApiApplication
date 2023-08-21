@@ -39,5 +39,12 @@ app.MapPost("api/posts",async (IMediator mediator, [FromBody]Post post ) =>
     return Results.CreatedAtRoute("GetPostById",new {createdPost.Id}, createdPost);
 });
 
+app.MapGet("/api/posts", async (IMediator mediator) =>
+{
+    var getCommand = new GetAllPosts();
+    var posts = await mediator.Send(getCommand);
+    return Results.Ok(posts);
+});
+
 app.Run();
 
