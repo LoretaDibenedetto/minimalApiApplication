@@ -22,12 +22,7 @@ namespace MinimalApi.EndPointDefinitions
 
             posts.MapPut("/{id}", UpdatePost);
 
-            posts.MapDelete("/{id}", async (IMediator mediator, int id) =>
-            {
-                var deletePost = new DeletePost { PostId = id };
-                await mediator.Send(deletePost);
-                return Results.NoContent();
-            });
+            posts.MapDelete("/{id}", DeletePost);
         }
 
         private async Task<IResult> GetPostById(IMediator mediator, int id)
@@ -55,7 +50,14 @@ namespace MinimalApi.EndPointDefinitions
         {
             var updatePost = new UpdatePost { PostId = id, PostContent = post.Content };
             var updatedPost = await mediator.Send(updatePost);
-            return Results.Ok(updatedPost);
+            return TypedResults.Ok(updatedPost);
+        }
+
+        private async Task<IResult> DeletePost(IMediator mediator,  int id)
+        {
+            var deletePost = new DeletePost { PostId = id };
+            await mediator.Send(deletePost);
+            return TypedResults.NoContent();
         }
 
     }
