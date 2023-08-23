@@ -16,12 +16,7 @@ namespace MinimalApi.EndPointDefinitions
             posts.MapGet("/{id}",GetPostById)
             .WithName("GetPostById");
 
-            posts.MapPost("/", async (IMediator mediator, [FromBody] Post post) =>
-            {
-                var createPost = new CreatePost { PostContent = post.Content };
-                var createdPost = await mediator.Send(createPost);
-                return Results.CreatedAtRoute("GetPostById", new { createdPost.Id }, createdPost);
-            });
+            posts.MapPost("/", CreatePost);
 
             posts.MapGet("/", async (IMediator mediator) =>
             {
@@ -50,6 +45,13 @@ namespace MinimalApi.EndPointDefinitions
             var getPost = new GetPostById { PostId = id };
             var post = await mediator.Send(getPost);
             return TypedResults.Ok(post);
+        }
+
+        private async Task<IResult>CreatePost(IMediator mediator, Post post)
+        {
+            var createPost = new CreatePost { PostContent = post.Content };
+            var createdPost = await mediator.Send(createPost);
+            return Results.CreatedAtRoute("GetPostById", new { createdPost.Id }, createdPost);
         }
     }
 }
