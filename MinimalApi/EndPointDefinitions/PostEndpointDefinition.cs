@@ -13,13 +13,7 @@ namespace MinimalApi.EndPointDefinitions
         {
             var posts = app.MapGroup("/api/posts");
 
-            posts.MapGet("/{id}", async (IMediator mediator, int id) =>
-            {
-                var getPost = new GetPostById { PostId = id };
-                var post = await mediator.Send(getPost);
-                return Results.Ok(post);
-
-            })
+            posts.MapGet("/{id}",GetPostById)
             .WithName("GetPostById");
 
             posts.MapPost("/", async (IMediator mediator, [FromBody] Post post) =>
@@ -49,6 +43,13 @@ namespace MinimalApi.EndPointDefinitions
                 await mediator.Send(deletePost);
                 return Results.NoContent();
             });
+        }
+
+        private async Task<IResult> GetPostById(IMediator mediator, int id)
+        {
+            var getPost = new GetPostById { PostId = id };
+            var post = await mediator.Send(getPost);
+            return TypedResults.Ok(post);
         }
     }
 }
