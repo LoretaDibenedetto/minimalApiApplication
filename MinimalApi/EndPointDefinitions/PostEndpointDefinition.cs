@@ -4,6 +4,7 @@ using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Abstractions;
+using MinimalApi.Filters;
 
 namespace MinimalApi.EndPointDefinitions
 {
@@ -16,11 +17,13 @@ namespace MinimalApi.EndPointDefinitions
             posts.MapGet("/{id}",GetPostById)
             .WithName("GetPostById");
 
-            posts.MapPost("/", CreatePost);
+            posts.MapPost("/", CreatePost)
+                .AddEndpointFilter<PostValidationFilter>();
 
             posts.MapGet("/", GetAllPost);
 
-            posts.MapPut("/{id}", UpdatePost);
+            posts.MapPut("/{id}", UpdatePost)
+                .AddEndpointFilter<PostValidationFilter>();
 
             posts.MapDelete("/{id}", DeletePost);
         }
